@@ -1,0 +1,170 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 1050" width="1600" height="1050" font-family="Segoe UI, Helvetica, Arial, sans-serif">
+  <title>Arquitectura DevOps · Ejercicio5</title>
+  <defs>
+    <marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#333"/></marker>
+    <marker id="g" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#2e8b57"/></marker>
+    <style>
+      .t{font-size:14px;font-weight:700;fill:#1f2937}
+      .n{font-size:13px;font-weight:600;fill:#1f2937}
+      .s{font-size:11.5px;fill:#374151}
+      .l{font-size:11px;fill:#4b5563}
+      .lg{font-size:11px;fill:#2e8b57;font-weight:600}
+      .e{stroke:#333;stroke-width:1.6;fill:none;marker-end:url(#a)}
+      .d{stroke:#555;stroke-width:1.4;fill:none;stroke-dasharray:5 4;marker-end:url(#a)}
+      .f{stroke:#2e8b57;stroke-width:1.8;fill:none;stroke-dasharray:7 4;marker-end:url(#g)}
+      .b{fill:#fff;stroke-width:1.3}
+    </style>
+  </defs>
+  <rect width="1600" height="1050" fill="#ffffff"/>
+
+  <!-- Desarrollador -->
+  <rect x="30" y="60" width="170" height="50" rx="25" fill="#ede9fe" stroke="#7c3aed"/>
+  <text x="115" y="90" text-anchor="middle" class="n">👤 Desarrollador</text>
+
+  <!-- ① GitHub -->
+  <rect x="260" y="20" width="360" height="170" rx="10" fill="#f6f8fa" stroke="#24292f"/>
+  <text x="440" y="44" text-anchor="middle" class="t">① GitHub · control de versiones</text>
+  <rect x="280" y="58" width="320" height="34" rx="5" class="b" stroke="#24292f"/>
+  <text x="440" y="80" text-anchor="middle" class="s">Ejercicio5Cliente · frontend</text>
+  <rect x="280" y="100" width="320" height="34" rx="5" class="b" stroke="#24292f"/>
+  <text x="440" y="122" text-anchor="middle" class="s">Ejercicio5MyAPIGestor · backend</text>
+  <rect x="280" y="142" width="320" height="34" rx="5" class="b" stroke="#24292f"/>
+  <text x="440" y="164" text-anchor="middle" class="s">Ejercicio5Infra · IaC · monitoreo · k6</text>
+
+  <!-- ② Jenkins -->
+  <rect x="680" y="20" width="900" height="170" rx="10" fill="#eef4fb" stroke="#335061"/>
+  <text x="1130" y="44" text-anchor="middle" class="t">② Jenkins (Docker local) · integración continua</text>
+  <g class="s" text-anchor="middle">
+    <rect x="700" y="80" width="150" height="60" rx="6" class="b" stroke="#335061"/><text x="775" y="106" class="n">Checkout</text><text x="775" y="124">rama main</text>
+    <rect x="875" y="80" width="150" height="60" rx="6" class="b" stroke="#335061"/><text x="950" y="106" class="n">Maven</text><text x="950" y="124">build + Surefire</text>
+    <rect x="1050" y="80" width="150" height="60" rx="6" class="b" stroke="#335061"/><text x="1125" y="106" class="n">JaCoCo</text><text x="1125" y="124">cobertura 100 %</text>
+    <rect x="1225" y="80" width="150" height="60" rx="6" class="b" stroke="#335061"/><text x="1300" y="106" class="n">SonarQube</text><text x="1300" y="124">calidad</text>
+    <rect x="1400" y="80" width="150" height="60" rx="6" class="b" stroke="#335061"/><text x="1475" y="106" class="n">Semgrep</text><text x="1475" y="124">SAST</text>
+  </g>
+  <path class="e" d="M850,110 H873"/><path class="e" d="M1025,110 H1048"/><path class="e" d="M1200,110 H1223"/><path class="e" d="M1375,110 H1398"/>
+  <text x="1130" y="170" text-anchor="middle" class="l">Publica: resultados JUnit · cobertura · análisis Sonar · semgrep.json</text>
+
+  <!-- Flechas superiores -->
+  <path class="e" d="M200,85 H258"/>
+  <text x="229" y="77" text-anchor="middle" class="l">push</text>
+  <path class="e" d="M620,105 H678"/>
+  <text x="649" y="97" text-anchor="middle" class="l">código</text>
+  <path class="e" d="M440,190 V238"/>
+  <text x="448" y="230" class="l">código IaC</text>
+
+  <!-- ③ IaC -->
+  <rect x="260" y="240" width="640" height="120" rx="10" fill="#f5f0ff" stroke="#7b42bc"/>
+  <text x="580" y="263" text-anchor="middle" class="t">③ Infraestructura como Código · .\iac.ps1 up</text>
+  <rect x="280" y="280" width="260" height="64" rx="6" class="b" stroke="#7b42bc"/>
+  <text x="410" y="305" text-anchor="middle" class="n">Terraform · aprovisiona</text>
+  <text x="410" y="324" text-anchor="middle" class="s">llave SSH · Security Group · EC2</text>
+  <rect x="620" y="280" width="260" height="64" rx="6" class="b" stroke="#7b42bc"/>
+  <text x="750" y="305" text-anchor="middle" class="n">Ansible · configura y despliega</text>
+  <text x="750" y="324" text-anchor="middle" class="s">Docker · compose up --build</text>
+  <path class="e" d="M540,312 H618"/>
+  <text x="579" y="304" text-anchor="middle" class="l">inventario</text>
+  <path class="e" d="M410,344 V408"/>
+  <text x="402" y="378" text-anchor="end" class="l">API de AWS</text>
+  <path class="e" d="M750,344 V408"/>
+  <text x="742" y="378" text-anchor="end" class="l">SSH</text>
+
+  <!-- ⑥ k6 y usuario -->
+  <rect x="1000" y="255" width="250" height="70" rx="8" fill="#e9f7ef" stroke="#2e8b57"/>
+  <text x="1125" y="284" text-anchor="middle" class="n">⑥ k6 · prueba de carga</text>
+  <text x="1125" y="304" text-anchor="middle" class="s">hasta 30 usuarios virtuales</text>
+  <rect x="1340" y="265" width="200" height="50" rx="25" fill="#ede9fe" stroke="#7c3aed"/>
+  <text x="1440" y="295" text-anchor="middle" class="n">🌐 Usuario</text>
+
+  <!-- ④ AWS -->
+  <rect x="260" y="410" width="1320" height="620" rx="12" fill="#fffaf2" stroke="#ff9900" stroke-width="2"/>
+  <text x="280" y="436" class="t">④ AWS us-east-2 · EC2 m7i-flex.large (2 vCPU, 8 GB) · Ubuntu 24.04 · Docker Compose</text>
+
+  <!-- Aplicación -->
+  <rect x="900" y="460" width="650" height="200" rx="10" fill="#fff4e5" stroke="#ff9900"/>
+  <text x="920" y="482" class="t">Aplicación</text>
+  <path d="M930,528 a70,12 0 0,0 140,0 a70,12 0 0,0 -140,0 v64 a70,12 0 0,0 140,0 v-64" fill="#fff" stroke="#ff9900" stroke-width="1.3"/>
+  <text x="1000" y="567" text-anchor="middle" class="n">MySQL 8.4</text>
+  <text x="1000" y="585" text-anchor="middle" class="s">volumen persistente</text>
+  <rect x="1120" y="520" width="180" height="84" rx="6" class="b" stroke="#ff9900"/>
+  <text x="1210" y="546" text-anchor="middle" class="n">API REST</text>
+  <text x="1210" y="565" text-anchor="middle" class="s">Spring Boot + JPA</text>
+  <text x="1210" y="583" text-anchor="middle" class="s">:8081 (solo interno)</text>
+  <rect x="1350" y="520" width="180" height="84" rx="6" class="b" stroke="#ff9900"/>
+  <text x="1440" y="546" text-anchor="middle" class="n">Cliente web</text>
+  <text x="1440" y="565" text-anchor="middle" class="s">Spring Boot + Thymeleaf</text>
+  <text x="1440" y="583" text-anchor="middle" class="s">:80 (público)</text>
+  <path class="e" d="M1350,562 H1302"/>
+  <text x="1326" y="554" text-anchor="middle" class="l">REST</text>
+  <path class="e" d="M1120,562 H1072"/>
+  <text x="1096" y="554" text-anchor="middle" class="l">JDBC</text>
+  <text x="1225" y="640" text-anchor="middle" class="l">Imágenes construidas en la VM desde la rama main de GitHub</text>
+
+  <path class="e" d="M1440,315 V518"/>
+  <text x="1450" y="372" class="l">HTTP :80</text>
+  <path class="e" d="M1125,325 V500 H1420 V518"/>
+  <text x="1133" y="372" class="l">carga HTTP :80</text>
+
+  <!-- ⑤ Observabilidad -->
+  <rect x="290" y="460" width="560" height="540" rx="10" fill="#fff1ee" stroke="#e6522c"/>
+  <text x="310" y="482" class="t">⑤ Monitoreo y observabilidad</text>
+  <rect x="320" y="520" width="200" height="60" rx="6" class="b" stroke="#e6522c"/>
+  <text x="420" y="545" text-anchor="middle" class="n">node-exporter</text>
+  <text x="420" y="564" text-anchor="middle" class="s">CPU · memoria · disco</text>
+  <rect x="600" y="520" width="220" height="60" rx="6" class="b" stroke="#e6522c"/>
+  <text x="710" y="545" text-anchor="middle" class="n">Prometheus</text>
+  <text x="710" y="564" text-anchor="middle" class="s">métricas + 5 reglas de alerta</text>
+  <rect x="320" y="700" width="200" height="60" rx="6" class="b" stroke="#e6522c"/>
+  <text x="420" y="725" text-anchor="middle" class="n">Grafana Alloy</text>
+  <text x="420" y="744" text-anchor="middle" class="s">logs de los contenedores</text>
+  <rect x="600" y="700" width="220" height="60" rx="6" class="b" stroke="#e6522c"/>
+  <text x="710" y="725" text-anchor="middle" class="n">Loki</text>
+  <text x="710" y="744" text-anchor="middle" class="s">almacena logs</text>
+  <rect x="460" y="870" width="240" height="70" rx="6" class="b" stroke="#e6522c" stroke-width="2"/>
+  <text x="580" y="898" text-anchor="middle" class="n">Grafana :3000</text>
+  <text x="580" y="918" text-anchor="middle" class="s">tablero · alertas · logs</text>
+  <path class="e" d="M520,550 H598"/>
+  <path class="e" d="M520,730 H598"/>
+  <path class="e" d="M820,550 H835 V905 H702"/>
+  <path class="e" d="M710,760 V820 H620 V868"/>
+  <path class="d" d="M900,550 H822"/>
+  <text x="861" y="530" text-anchor="middle" class="l">métricas</text>
+  <text x="861" y="543" text-anchor="middle" class="l">:9091</text>
+  <text x="570" y="975" text-anchor="middle" class="l">Prometheus lee /actuator/prometheus de la API y el cliente cada 15 s</text>
+
+  <!-- Seguridad -->
+  <rect x="900" y="700" width="650" height="300" rx="10" fill="#ffffff" stroke="#ff9900" stroke-dasharray="6 4"/>
+  <text x="920" y="728" class="t">Seguridad de red y secretos</text>
+  <g class="s">
+    <text x="920" y="762">• Security Group: puertos 80 (cliente) y 3000 (Grafana) públicos</text>
+    <text x="920" y="790">• SSH (22) solo desde la IP pública del administrador</text>
+    <text x="920" y="818">• API (:8081) y Prometheus (:9090) escuchan solo en 127.0.0.1</text>
+    <text x="920" y="846">• Métricas de Spring en el puerto interno :9091, no expuesto</text>
+    <text x="920" y="874">• MySQL sin puertos publicados: solo la API lo alcanza</text>
+    <text x="920" y="902">• Secretos en secrets.env (fuera de Git) → .env en la VM con permisos 600</text>
+    <text x="920" y="930">• Llave SSH generada por Terraform; estado local fuera del repositorio</text>
+  </g>
+
+  <!-- ⑦ Retroalimentación -->
+  <rect x="20" y="430" width="190" height="270" rx="10" fill="#e9f7ef" stroke="#2e8b57" stroke-width="1.6"/>
+  <text x="115" y="458" text-anchor="middle" class="t">⑦ Retroalimentación</text>
+  <g class="s" text-anchor="middle">
+    <text x="115" y="490">Reportes de CI</text>
+    <text x="115" y="510">(pruebas, Sonar, Semgrep)</text>
+    <text x="115" y="540">Métricas, alertas</text>
+    <text x="115" y="560">y logs de Grafana</text>
+    <text x="115" y="590">p95, throughput y</text>
+    <text x="115" y="610">errores de k6</text>
+    <text x="115" y="640">↓</text>
+    <text x="115" y="664" class="n">corrección →</text>
+    <text x="115" y="682" class="n">nuevo commit</text>
+  </g>
+  <path class="f" d="M115,430 V114"/>
+  <text x="106" y="275" text-anchor="middle" class="lg" transform="rotate(-90 106 275)">mejora continua</text>
+
+  <path class="f" d="M1130,190 V212 H235 V480 H213"/>
+  <text x="1140" y="206" class="lg">reportes</text>
+  <path class="f" d="M1000,290 H950 V392 H225 V580 H213"/>
+  <text x="958" y="386" class="lg">resultados k6</text>
+  <path class="f" d="M460,905 H245 V640 H213"/>
+  <text x="300" y="898" class="lg">alertas · logs</text>
+</svg>

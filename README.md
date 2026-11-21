@@ -5,6 +5,12 @@ Infraestructura como Código del gestor de proyectos Ejercicio5. Un solo comando
 - [Ejercicio5Cliente](https://github.com/Marco33100/Ejercicio5Cliente) (frontend, Spring Boot + Thymeleaf)
 - [Ejercicio5MyAPIGestor](https://github.com/Marco33100/Ejercicio5MyAPIGestor) (backend, API REST)
 
+## Arquitectura
+
+![Arquitectura DevOps](docs/arquitectura.svg)
+
+Flujo completo y justificación de cada decisión: [docs/arquitectura.md](docs/arquitectura.md).
+
 ## Herramientas y justificación
 
 | Herramienta | Alcance | Por qué |
