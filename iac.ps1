@@ -1,11 +1,12 @@
 <#
   Ejecuta Terraform y Ansible dentro del contenedor de herramientas.
-  Uso: .\iac.ps1 <init|plan|apply|deploy|up|destroy|ssh>
-    up = apply + deploy (crea la infraestructura y despliega la aplicación en un solo paso)
+  Uso: .\iac.ps1 <init|plan|apply|deploy|up|destroy|ssh|carga>
+    up    = apply + deploy (crea la infraestructura y despliega la aplicación en un solo paso)
+    carga = prueba de carga k6 contra el despliegue; guarda el reporte en performance/resultados/
 #>
 param(
     [Parameter(Mandatory)]
-    [ValidateSet('init', 'plan', 'apply', 'deploy', 'up', 'destroy', 'ssh')]
+    [ValidateSet('init', 'plan', 'apply', 'deploy', 'up', 'destroy', 'ssh', 'carga')]
     [string]$Accion
 )
 $ErrorActionPreference = 'Stop'
@@ -38,5 +39,20 @@ switch ($Accion) {
     'ssh'     {
         $ip = (docker run --rm -v "${root}:/work" ejercicio5-iac terraform -chdir=terraform output -raw ip_publica).Trim()
         Invoke-Herramienta ssh -o StrictHostKeyChecking=no -i /root/.ssh/ejercicio5.pem "ubuntu@$ip"
+    }
+    'carga'   {
+        $ip = (docker run --rm -v "${root}:/work" ejercicio5-iac terraform -chdir=terraform output -raw ip_publica).Trim()
+        # A k6 solo se le pasan las credenciales de la app, no las llaves de AWS.
+        $vars = @{}
+        Get-Content "$root\secrets.env" | Where-Object { $_ -match '^(ADMIN_EMAIL|ADMIN_PASSWORD)=(.*)$' } |
+            ForEach-Object { $vars[$Matches[1]] = $Matches[2] }
+        $fecha = Get-Date -Format 'yyyy-MM-dd_HHmm'
+        New-Item -ItemType Directory -Force "$root\performance\resultados" | Out-Null
+        docker run --rm -it -v "${root}\performance:/perf" `
+            -e "BASE_URL=http://$ip" -e "ADMIN_EMAIL=$($vars.ADMIN_EMAIL)" -e "ADMIN_PASSWORD=$($vars.ADMIN_PASSWORD)" `
+            -e K6_WEB_DASHBOARD=true -e "K6_WEB_DASHBOARD_EXPORT=/perf/resultados/reporte_$fecha.html" `
+            grafana/k6:1.1.0 run --summary-export "/perf/resultados/resumen_$fecha.json" /perf/carga.js
+        # k6 sale con código 99 si no se cumplen los umbrales: el reporte se guarda igual.
+        Write-Host "Reporte: performance\resultados\reporte_$fecha.html"
     }
 }

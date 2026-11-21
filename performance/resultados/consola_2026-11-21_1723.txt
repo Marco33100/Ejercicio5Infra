@@ -1,0 +1,46 @@
+time="2026-11-21T23:28:30Z" level=warning msg="Request Failed" error="Get \"http://18.188.144.49/login\": dial tcp 18.188.144.49:80: connect: connection refused"
+
+
+  █ THRESHOLDS 
+
+    checks
+    ✓ 'rate>0.99' rate=99.98%
+
+    http_req_duration
+    ✓ 'p(95)<800' p(95)=254.98ms
+
+    http_req_failed
+    ✓ 'rate<0.01' rate=0.01%
+
+
+  █ TOTAL RESULTS 
+
+    checks_total.......................: 9828   29.43571/s
+    checks_succeeded...................: 99.98% 9827 out of 9828
+    checks_failed......................: 0.01%  1 out of 9828
+
+    ✗ login 200
+      ↳  99% — ✓ 3275 / ✗ 1
+    ✓ credenciales aceptadas
+    ✓ inicio 200
+    ✓ proyectos 200
+    ✓ respuesta JSON
+
+    HTTP
+    http_req_duration.......................................................: avg=125.73ms min=0s      med=79.4ms  p(90)=155.37ms p(95)=254.98ms p(99)=626.25ms max=25.98s
+      { expected_response:true }............................................: avg=125.75ms min=63.27ms med=79.41ms p(90)=155.38ms p(95)=255.03ms p(99)=626.34ms max=25.98s
+    http_req_failed.........................................................: 0.01%  1 out of 6553
+    http_reqs...............................................................: 6553   19.626802/s
+
+    EXECUTION
+    iteration_duration......................................................: avg=4.52s    min=4.32s   med=4.38s   p(90)=4.68s    p(95)=4.83s    p(99)=5.99s    max=30.82s
+    iterations..............................................................: 1638   4.905952/s
+    vus.....................................................................: 1      min=1         max=30
+    vus_max.................................................................: 30     min=30        max=30
+
+    NETWORK
+    data_received...........................................................: 40 MB  118 kB/s
+    data_sent...............................................................: 765 kB 2.3 kB/s
+
+
+
