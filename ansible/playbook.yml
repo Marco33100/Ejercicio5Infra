@@ -10,6 +10,7 @@
     db_root_password: "{{ lookup('ansible.builtin.env', 'DB_ROOT_PASSWORD') }}"
     admin_email: "{{ lookup('ansible.builtin.env', 'ADMIN_EMAIL') }}"
     admin_password: "{{ lookup('ansible.builtin.env', 'ADMIN_PASSWORD') }}"
+    grafana_password: "{{ lookup('ansible.builtin.env', 'GRAFANA_PASSWORD') }}"
 
   tasks:
     - name: Esperar a que la VM acepte SSH
@@ -26,7 +27,8 @@
           - db_root_password | length > 0
           - admin_email | length > 0
           - admin_password | length > 0
-        fail_msg: Define DB_PASSWORD, DB_ROOT_PASSWORD, ADMIN_EMAIL y ADMIN_PASSWORD en secrets.env
+          - grafana_password | length > 0
+        fail_msg: Define DB_PASSWORD, DB_ROOT_PASSWORD, ADMIN_EMAIL, ADMIN_PASSWORD y GRAFANA_PASSWORD en secrets.env
         quiet: true
 
     - name: Instalar prerrequisitos
@@ -92,6 +94,29 @@
       retries: 30
       delay: 10
 
+    - name: Verificar que Prometheus lee todos sus objetivos
+      ansible.builtin.uri:
+        url: http://127.0.0.1:9090/api/v1/targets?state=active
+        return_content: true
+      register: targets
+      until: >-
+        targets.status == 200 and
+        (targets.json.data.activeTargets | selectattr('health', 'equalto', 'up') | list | length)
+        == (targets.json.data.activeTargets | length)
+      retries: 18
+      delay: 10
+
+    - name: Verificar Grafana
+      ansible.builtin.uri:
+        url: http://127.0.0.1:3000/api/health
+      register: grafana_check
+      until: grafana_check.status == 200
+      retries: 18
+      delay: 10
+
     - name: Resultado
       ansible.builtin.debug:
-        msg: "Desplegado en http://{{ inventory_hostname }} — usuarios en la base: {{ api_check.json | length }}"
+        msg:
+          - "Cliente: http://{{ inventory_hostname }} — usuarios en la base: {{ api_check.json | length }}"
+          - "Grafana: http://{{ inventory_hostname }}:3000 (usuario admin)"
+          - "Prometheus: {{ targets.json.data.activeTargets | map(attribute='labels.job') | join(', ') }} en estado up"

@@ -59,6 +59,14 @@ resource "aws_security_group" "app" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
+  ingress {
+    description = "Grafana (tablero de monitoreo, con usuario y contrasena)"
+    from_port   = 3000
+    to_port     = 3000
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
   egress {
     description = "Salida a Internet (paquetes, GitHub, Docker Hub)"
     from_port   = 0

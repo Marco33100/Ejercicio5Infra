@@ -19,18 +19,35 @@ Render no se usa para esta parte porque su API (y por lo tanto su provider de Te
 ## Arquitectura desplegada
 
 ```
-Internet ──:80──▶ cliente (8080) ──red interna──▶ api (8081) ──▶ mysql (3306, volumen persistente)
-Tu IP ────:22──▶ SSH (Ansible)
+Internet ──:80───▶ cliente (8080) ──red interna──▶ api (8081) ──▶ mysql (3306, volumen persistente)
+Internet ──:3000─▶ grafana ──▶ prometheus ──(:9091 /actuator/prometheus)──▶ api, cliente
+                           │             └──▶ node-exporter (CPU, memoria, disco de la VM)
+                           └─▶ loki ◀── alloy (logs de todos los contenedores)
+Tu IP ────:22────▶ SSH (Ansible)
 ```
 
-Solo el puerto 80 es público. SSH se limita a la IP de quien ejecuta Terraform. La API solo escucha en `127.0.0.1` de la VM y MySQL no publica puertos.
+Solo los puertos 80 (cliente) y 3000 (Grafana, con usuario y contraseña) son públicos. Las métricas de Spring Boot se publican en un puerto interno (9091) que solo alcanza Prometheus. SSH se limita a la IP de quien ejecuta Terraform. La API solo escucha en `127.0.0.1` de la VM y MySQL no publica puertos.
+
+## Monitoreo y observabilidad
+
+| Componente | Función |
+|---|---|
+| Spring Boot Actuator + Micrometer | La API y el cliente exponen métricas (peticiones, códigos HTTP, latencia con histograma, JVM). |
+| Prometheus | Recolecta métricas cada 15 s y evalúa las reglas de [alertas.yml](app/monitoring/prometheus/alertas.yml). |
+| node-exporter | CPU, memoria, disco y red de la VM. |
+| Loki + Grafana Alloy | Alloy lee los logs de los contenedores del proyecto y los envía a Loki. |
+| Grafana | Tablero `Ejercicio5 · Monitoreo` provisionado como código: disponibilidad, CPU, memoria, peticiones/s, errores 4xx/5xx, latencia p95, heap JVM y logs. |
+
+Alertas: `ServicioCaido` (un objetivo sin responder 1 min), `TasaErrores5xxAlta` (> 5 % durante 2 min), `LatenciaP95Alta` (> 1 s durante 5 min), `CPUAlta` (> 85 %) y `MemoriaAlta` (> 90 %). Se ven en Grafana → **Alerting → Alert rules**. No hay notificaciones por correo: las alertas se observan en el tablero.
+
+Grafana: `http://<ip>:3000`, usuario `admin`, contraseña `GRAFANA_PASSWORD`.
 
 ## Estructura
 
 ```
 terraform/   aprovisionamiento en AWS (genera ansible/inventory.ini y .ssh/ejercicio5.pem)
 ansible/     configuración de la VM y despliegue
-app/         compose.yml + scripts de inicialización de MySQL (esquema y usuario inicial)
+app/         compose.yml, inicialización de MySQL y configuración de monitoreo (monitoring/)
 tools/       imagen Docker con Terraform 1.9.8 y ansible-core 2.17.7
 iac.ps1      ejecuta todo desde Windows dentro de esa imagen
 ```
