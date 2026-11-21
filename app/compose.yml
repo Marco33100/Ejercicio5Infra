@@ -1,0 +1,53 @@
+name: ejercicio5
+
+services:
+  mysql:
+    image: mysql:8.4
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: dbgestor
+      MYSQL_USER: gestor
+      MYSQL_PASSWORD: ${DB_PASSWORD:?Falta DB_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD:?Falta DB_ROOT_PASSWORD}
+      ADMIN_EMAIL: ${ADMIN_EMAIL:?Falta ADMIN_EMAIL}
+      ADMIN_PASSWORD: ${ADMIN_PASSWORD:?Falta ADMIN_PASSWORD}
+    volumes:
+      - mysql-data:/var/lib/mysql
+      - ./mysql:/docker-entrypoint-initdb.d:ro
+    healthcheck:
+      # Por TCP: durante la inicialización MySQL no escucha en red, así que no se marca sano antes de tiempo.
+      test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "--silent"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+      start_period: 30s
+
+  api:
+    build:
+      context: https://github.com/Marco33100/Ejercicio5MyAPIGestor.git#${API_REF:-main}
+    restart: unless-stopped
+    environment:
+      DB_HOST: mysql
+      DB_PORT: "3306"
+      DB_NAME: dbgestor
+      DB_USER: gestor
+      DB_PASSWORD: ${DB_PASSWORD}
+    ports:
+      - "127.0.0.1:8081:8081" # solo local: la API no se expone a Internet
+    depends_on:
+      mysql:
+        condition: service_healthy
+
+  cliente:
+    build:
+      context: https://github.com/Marco33100/Ejercicio5Cliente.git#${CLIENTE_REF:-main}
+    restart: unless-stopped
+    environment:
+      GESTOR_API_URL: http://api:8081
+    ports:
+      - "80:8080"
+    depends_on:
+      - api
+
+volumes:
+  mysql-data:

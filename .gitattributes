@@ -1,0 +1,5 @@
+# Los scripts corren en Linux: CRLF los rompe.
+*.sh   text eol=lf
+*.yml  text eol=lf
+*.j2   text eol=lf
+*.sql  text eol=lf

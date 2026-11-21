@@ -1,0 +1,13 @@
+# Secretos y llaves: nunca al repositorio
+secrets.env
+app/.env
+.ssh/
+
+# Estado y caché de Terraform (el estado contiene la llave privada)
+terraform/.terraform/
+terraform/*.tfstate
+terraform/*.tfstate.*
+terraform/*.tfvars
+
+# Generado por Terraform
+ansible/inventory.ini
